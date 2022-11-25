@@ -439,9 +439,7 @@ int FormantTransition2(frameref_t *seq, int *n_frames, unsigned int data1, unsig
 
 void Write4Bytes(FILE *f, int value);
 
-#if HAVE_SONIC_H
 void DoSonicSpeed(int value);
-#endif
 
 #define ENV_LEN  128    // length of pitch envelopes
 #define PITCHfall   0  // standard pitch envelopes

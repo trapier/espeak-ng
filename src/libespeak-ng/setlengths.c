@@ -157,7 +157,6 @@ void SetSpeed(int control)
 
 	speed.min_pause = 5;
 
-	#if HAVE_SONIC_H
 	int wpm_value = wpm;
 
 	if (voice->speed_percent > 0)
@@ -192,11 +191,6 @@ void SetSpeed(int control)
 		}
 		return;
 	}
-
-	#else
-	if (voice->speed_percent > 0)
-		wpm = (wpm * voice->speed_percent)/100;
-	#endif
 
 	SetSpeedMultiplier(&x, &wpm);
 

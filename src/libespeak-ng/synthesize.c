@@ -1040,7 +1040,6 @@ void DoPhonemeMarker(int type, int char_posn, int length, char *name)
 	}
 }
 
-#if HAVE_SONIC_H
 void DoSonicSpeed(int value)
 {
 	// value, multiplier * 1024
@@ -1048,7 +1047,6 @@ void DoSonicSpeed(int value)
 	wcmdq[wcmdq_tail][1] = value;
 	WcmdqInc();
 }
-#endif
 
 espeak_ng_STATUS DoVoiceChange(voice_t *v)
 {

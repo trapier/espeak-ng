@@ -41,9 +41,7 @@
 #include "klatt.h"
 #endif
 
-#if HAVE_SONIC_H
 #include "sonic.h"
-#endif
 
 #include "sintab.h"
 #include "speech.h"
@@ -121,10 +119,8 @@ int wcmdq_tail = 0;
 const int embedded_default[N_EMBEDDED_VALUES]    = { 0,     50, espeakRATE_NORMAL, 100, 50,  0,  0, 0, espeakRATE_NORMAL, 0, 0, 0, 0, 0, 0 };
 static int embedded_max[N_EMBEDDED_VALUES] = { 0, 0x7fff, 750, 300, 99, 99, 99, 0, 750, 0, 0, 0, 0, 4, 0 };
 
-#if HAVE_SONIC_H
 static sonicStream sonicSpeedupStream = NULL;
 static double sonicSpeed = 1.0;
-#endif
 
 // 1st index=roughness
 // 2nd index=modulation_type
@@ -239,12 +235,10 @@ void WcmdqStop()
 	wcmdq_head = 0;
 	wcmdq_tail = 0;
 
-#if HAVE_SONIC_H
 	if (sonicSpeedupStream != NULL) {
 		sonicDestroyStream(sonicSpeedupStream);
 		sonicSpeedupStream = NULL;
 	}
-#endif
 
 	if (mbrola_name[0] != 0)
 		MbrolaReset();
@@ -1363,7 +1357,6 @@ static int WavegenFill2()
 			if ((wdata.amplitude_fmt = q[1]) == 0)
 				wdata.amplitude_fmt = 100; // percentage, but value=0 means 100%
 			break;
-#if HAVE_SONIC_H
 		case WCMD_SONIC_SPEED:
 			sonicSpeed = (double)q[1] / 1024;
 			if (sonicSpeedupStream && (sonicSpeed <= 1.0)) {
@@ -1373,7 +1366,6 @@ static int WavegenFill2()
 				out_ptr += length * 2;
 			}
 			break;
-#endif
 		}
 
 		if (result == 0) {
@@ -1386,7 +1378,6 @@ static int WavegenFill2()
 	return 0;
 }
 
-#if HAVE_SONIC_H
 // Speed up the audio samples with libsonic.
 static int SpeedUp(short *outbuf, int length_in, int length_out, int end_of_text)
 {
@@ -1406,21 +1397,17 @@ static int SpeedUp(short *outbuf, int length_in, int length_out, int end_of_text
 		sonicFlushStream(sonicSpeedupStream);
 	return sonicReadShortFromStream(sonicSpeedupStream, outbuf, length_out);
 }
-#endif
 
 // Call WavegenFill2, and then speed up the output samples.
 int WavegenFill(void)
 {
 	int finished;
-#if HAVE_SONIC_H
 	unsigned char *p_start;
 
 	p_start = out_ptr;
-#endif
 
 	finished = WavegenFill2();
 
-#if HAVE_SONIC_H
 	if (sonicSpeed > 1.0) {
 		int length;
 		int max_length;
@@ -1432,7 +1419,6 @@ int WavegenFill(void)
 		if (length >= max_length)
 			finished = 0; // there may be more data to flush
 	}
-#endif
 	return finished;
 }
 

@@ -37,6 +37,7 @@ ESPEAK_SOURCES := \
   src/libespeak-ng/phonemelist.c \
   src/libespeak-ng/readclause.c \
   src/libespeak-ng/setlengths.c \
+  src/libespeak-ng/sonic.c \
   src/libespeak-ng/soundicon.c \
   src/libespeak-ng/spect.c \
   src/libespeak-ng/speech.c \
@@ -55,7 +56,7 @@ ESPEAK_SRC_PATH  := ../../src
 ESPEAK_SRC_FILES := \
   $(subst src/,$(ESPEAK_SRC_PATH)/,$(ESPEAK_SOURCES))
 
-LOCAL_CFLAGS    += -DINCLUDE_KLATT -DINCLUDE_SPEECHPLAYER -DINCLUDE_SONIC -DHAVE_ENDIAN_H
+LOCAL_CFLAGS    += -DINCLUDE_KLATT -DINCLUDE_SPEECHPLAYER -DHAVE_ENDIAN_H
 LOCAL_SRC_FILES += \
   $(filter-out $(BLACKLIST_SRC_FILES),$(ESPEAK_SRC_FILES))
 
